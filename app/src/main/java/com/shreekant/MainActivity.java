@@ -169,7 +169,7 @@ public class MainActivity extends Activity {
                 if (RemoteConfig.remoteVersionCode > localVersion) {
                     showUpdateDialog(RemoteConfig.updateUrl);
                 } else if (showToastIfUpToDate) {
-                    showUpdateDialog(RemoteConfig.updateUrl);
+                    Toast.makeText(MainActivity.this, "APK is up to date (v" + localVersion + ")", Toast.LENGTH_SHORT).show();
                 }
             });
         });
