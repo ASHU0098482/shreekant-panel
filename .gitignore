@@ -1,6 +1,7 @@
 # Built application files
 *.apk
 !SHREEKANT_PANEL.apk
+!SHREEKANT_PANEL_v2.apk
 !VIP_PANEL.apk
 !JACK_PANEL.apk
 !app-release-signed.apk
