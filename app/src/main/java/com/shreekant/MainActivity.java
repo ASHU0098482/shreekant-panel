@@ -1,4 +1,4 @@
-package com.ashu;
+package com.shreekant;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -84,7 +84,7 @@ public class MainActivity extends Activity {
 
     public void showUpdateDialog(final String updateUrl) {
         final String validUpdateUrl = (updateUrl != null && !updateUrl.isEmpty())
-            ? updateUrl : "https://raw.githubusercontent.com/ASHU0098482/status/main/JACK_PANEL.apk";
+            ? updateUrl : "https://raw.githubusercontent.com/ASHU0098482/shreekant-panel/main/SHREEKANT_PANEL.apk";
         String msg = (RemoteConfig.noticeMessage != null && !RemoteConfig.noticeMessage.isEmpty()) 
             ? RemoteConfig.noticeMessage + "\n\nTap 'UPDATE NOW' to download and install from GitHub."
             : "A new update is available on GitHub. Tap 'UPDATE NOW' to download and install.";
@@ -122,16 +122,38 @@ public class MainActivity extends Activity {
             .show();
     }
 
+    @Override
+    public void onBackPressed() {
+        if (!RemoteConfig.isOnline) {
+            finishAffinity();
+            android.os.Process.killProcess(android.os.Process.myPid());
+            System.exit(0);
+            return;
+        }
+        super.onBackPressed();
+    }
+
     private void showMaintenanceDialog(String message) {
-        new android.app.AlertDialog.Builder(MainActivity.this, android.R.style.Theme_DeviceDefault_Dialog_Alert)
-            .setTitle("Under Maintenance")
-            .setMessage(message)
+        final String displayMsg = (message != null && !message.trim().isEmpty())
+            ? message : "SHREEKANT PANEL is currently under maintenance. Please check back later.";
+        android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(MainActivity.this, android.R.style.Theme_DeviceDefault_Dialog_Alert)
+            .setTitle("⚠️ Server Under Maintenance")
+            .setMessage(displayMsg)
             .setCancelable(false)
             .setPositiveButton("EXIT", (d, which) -> {
+                d.dismiss();
                 finishAffinity();
+                android.os.Process.killProcess(android.os.Process.myPid());
+                System.exit(0);
             })
-            .create()
-            .show();
+            .create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setOnDismissListener(d -> {
+            finishAffinity();
+            android.os.Process.killProcess(android.os.Process.myPid());
+            System.exit(0);
+        });
+        dialog.show();
     }
 
     public void checkForUpdates(final boolean showToastIfUpToDate) {
@@ -170,7 +192,7 @@ public class MainActivity extends Activity {
 
     public void downloadAndInstallApk(final String apkUrl) {
         final String downloadUrl = (apkUrl != null && !apkUrl.isEmpty())
-            ? apkUrl : "https://raw.githubusercontent.com/ASHU0098482/status/main/JACK_PANEL.apk";
+            ? apkUrl : "https://raw.githubusercontent.com/ASHU0098482/shreekant-panel/main/SHREEKANT_PANEL.apk";
         android.app.ProgressDialog progressDialog = new android.app.ProgressDialog(MainActivity.this, android.R.style.Theme_DeviceDefault_Dialog_Alert);
         String dialogTitle = (RemoteConfig.noticeTitle != null && !RemoteConfig.noticeTitle.isEmpty())
             ? RemoteConfig.noticeTitle : "🔄 Auto Updating APK...";
@@ -191,7 +213,7 @@ public class MainActivity extends Activity {
             try {
                 java.io.File updatesDir = new java.io.File(getExternalFilesDir(null), "updates");
                 if (!updatesDir.exists()) updatesDir.mkdirs();
-                java.io.File apkFile = new java.io.File(updatesDir, "JACK_PANEL_update.apk");
+                java.io.File apkFile = new java.io.File(updatesDir, "SHREEKANT_PANEL_update.apk");
                 if (apkFile.exists()) apkFile.delete();
 
                 String currentUrl = downloadUrl;
@@ -370,8 +392,8 @@ public class MainActivity extends Activity {
 
         // Load logo from remote config or fallback
         String logoUrl = null;
-        if (com.ashu.RemoteConfig.logoUrl != null && !com.ashu.RemoteConfig.logoUrl.isEmpty()) {
-            logoUrl = com.ashu.RemoteConfig.logoUrl;
+        if (com.shreekant.RemoteConfig.logoUrl != null && !com.shreekant.RemoteConfig.logoUrl.isEmpty()) {
+            logoUrl = com.shreekant.RemoteConfig.logoUrl;
             if (logoUrl.contains("?")) {
                 logoUrl += "&t=" + System.currentTimeMillis();
             } else {
@@ -388,7 +410,7 @@ public class MainActivity extends Activity {
                     @Override
                     public void onResourceReady(@androidx.annotation.NonNull android.graphics.Bitmap resource,
                             @androidx.annotation.Nullable com.bumptech.glide.request.transition.Transition<? super android.graphics.Bitmap> transition) {
-                        android.graphics.Bitmap transparentBitmap = com.ashu.Utils.makeBlackTransparent(resource);
+                        android.graphics.Bitmap transparentBitmap = com.shreekant.Utils.makeBlackTransparent(resource);
                         logoView.setImageBitmap(transparentBitmap);
                     }
                     @Override
@@ -399,16 +421,16 @@ public class MainActivity extends Activity {
         // --- PHASE 2: App name text (letter-by-letter) ---
         final TextView splashText = new TextView(this);
         // Get app name from remote config
-        String appName = (com.ashu.RemoteConfig.appName != null && !com.ashu.RemoteConfig.appName.isEmpty())
-                ? com.ashu.RemoteConfig.appName : "JACK PANEL";
+        String appName = (com.shreekant.RemoteConfig.appName != null && !com.shreekant.RemoteConfig.appName.isEmpty())
+                ? com.shreekant.RemoteConfig.appName : "SHREEKANT PANEL";
         splashText.setText("");
         splashText.setTextSize(36);
-        splashText.setTextColor(Color.parseColor("#FFB800")); // Golden accent
+        splashText.setTextColor(Color.parseColor("#FF1744")); // Cyber Red accent
         splashText.setTypeface(android.graphics.Typeface.DEFAULT_BOLD);
         splashText.setGravity(android.view.Gravity.CENTER);
         splashText.setAlpha(0f);
         // Neon glow shadow
-        splashText.setShadowLayer(30, 0, 0, Color.parseColor("#FFB800"));
+        splashText.setShadowLayer(30, 0, 0, Color.parseColor("#FF1744"));
         android.widget.FrameLayout.LayoutParams textParams = new android.widget.FrameLayout.LayoutParams(
                 android.widget.FrameLayout.LayoutParams.MATCH_PARENT,
                 android.widget.FrameLayout.LayoutParams.WRAP_CONTENT);
@@ -425,7 +447,7 @@ public class MainActivity extends Activity {
         glowParams.gravity = android.view.Gravity.CENTER_HORIZONTAL | android.view.Gravity.CENTER_VERTICAL;
         glowParams.topMargin = dpToPx(185);
         glowLine.setLayoutParams(glowParams);
-        glowLine.setBackgroundColor(Color.parseColor("#FFB800"));
+        glowLine.setBackgroundColor(Color.parseColor("#FF1744"));
         glowLine.setAlpha(0f);
         splashRoot.addView(glowLine);
 
@@ -485,7 +507,7 @@ public class MainActivity extends Activity {
                         splashText.setText(finalAppName.substring(0, charIndex[0]));
                         // Pulse the glow intensity
                         float glowRadius = 20 + (charIndex[0] % 3) * 10;
-                        splashText.setShadowLayer(glowRadius, 0, 0, Color.parseColor("#FFB800"));
+                        splashText.setShadowLayer(glowRadius, 0, 0, Color.parseColor("#FF1744"));
                         charIndex[0]++;
                         handler.postDelayed(this, letterDelay);
                     }
@@ -517,7 +539,7 @@ public class MainActivity extends Activity {
             glowAnim.setRepeatCount(1);
             glowAnim.addUpdateListener(animation -> {
                 float radius = (float) animation.getAnimatedValue();
-                splashText.setShadowLayer(radius, 0, 0, Color.parseColor("#FFB800"));
+                splashText.setShadowLayer(radius, 0, 0, Color.parseColor("#FF1744"));
             });
             glowAnim.start();
         }, textRevealDuration + 200);

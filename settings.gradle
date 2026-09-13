@@ -1,1 +1,2 @@
+rootProject.name = 'shreekant-panel'
 include ':app'

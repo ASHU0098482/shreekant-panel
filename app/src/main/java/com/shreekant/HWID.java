@@ -1,4 +1,4 @@
-package com.ashu;
+package com.shreekant;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

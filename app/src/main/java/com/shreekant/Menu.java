@@ -1,4 +1,4 @@
-package com.ashu;
+package com.shreekant;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -51,8 +51,8 @@ public class Menu {
     // Variables Menu
     public static String userLicenseKey = "admin";
     private int buttonClick = 0;
-    public static int PrimaryColor = 0xFFFFB800; // Golden accent
-    public static int TabSelectedColor = 0xFFFFB800; // Golden accent for selected tabs
+    public static int PrimaryColor = 0xFFFF1744; // Cyber Red accent
+    public static int TabSelectedColor = 0xFFFF1744; // Cyber Red accent for selected tabs
     private static Context context;
     private static Utils utils;
 
@@ -108,7 +108,7 @@ public class Menu {
         utils = new Utils(context);
         injectType = glob_injectType;
         if (context != null) {
-            String saved = context.getSharedPreferences("ASHUPrefs", Context.MODE_PRIVATE)
+            String saved = context.getSharedPreferences("SHREEKANTPrefs", Context.MODE_PRIVATE)
                     .getString("saved_license", "");
             if (saved != null && !saved.trim().isEmpty()) {
                 userLicenseKey = saved.trim();
@@ -297,7 +297,7 @@ public class Menu {
 
         TextView menuTitle = new TextView(context);
         String appDisplayName = (RemoteConfig.appName != null && !RemoteConfig.appName.isEmpty())
-                ? RemoteConfig.appName : "JACK PANEL";
+                ? RemoteConfig.appName : "SHREEKANT PANEL";
         menuTitle.setText(appDisplayName);
         menuTitle.setTextSize(13.5f);
         menuTitle.setTextColor(PrimaryColor);
@@ -612,7 +612,7 @@ public class Menu {
         }
 
         GradientDrawable gradientDrawable = new GradientDrawable();
-        gradientDrawable.setColor(Color.parseColor("#221A0F")); // Amber tinted dark badge
+        gradientDrawable.setColor(Color.parseColor("#28080C")); // Red tinted dark badge
         gradientDrawable.setCornerRadius(utils.FixDP(6));
         gradientDrawable.setStroke(utils.FixDP(1), PrimaryColor);
 

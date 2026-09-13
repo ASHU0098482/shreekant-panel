@@ -1,4 +1,4 @@
-package com.ashu;
+package com.shreekant;
 
 import android.app.Activity;
 import android.content.Context;
@@ -80,6 +80,7 @@ public class Login {
         GradientDrawable cardBg = new GradientDrawable();
         cardBg.setColor(Color.parseColor("#1b1b1b"));
         cardBg.setCornerRadius(new Utils(context).FixDP(18));
+        cardBg.setStroke(new Utils(context).FixDP(1.5f), Color.parseColor("#FF1744")); // Red Accent Border
         card.setBackground(cardBg);
 
         // Add logo
@@ -126,7 +127,7 @@ public class Login {
         titleLayout.setGravity(Gravity.CENTER);
 
         String remoteAppName = RemoteConfig.appName;
-        String firstWord = "JACK";
+        String firstWord = "SHREEKANT";
         String secondWord = "PANEL";
         if (remoteAppName != null && remoteAppName.contains(" ")) {
             int spaceIdx = remoteAppName.indexOf(" ");
@@ -140,7 +141,7 @@ public class Login {
         TextView titleRed = new TextView(context);
         titleRed.setText(firstWord + "  ");
         titleRed.setTextSize(22);
-        titleRed.setTextColor(Color.parseColor("#FFB800")); // Golden Accent
+        titleRed.setTextColor(Color.parseColor("#FF1744")); // Red Accent
         titleRed.setTypeface(null, Typeface.BOLD);
 
         TextView titleWhite = new TextView(context);
@@ -242,7 +243,7 @@ public class Login {
         etParams.gravity = Gravity.CENTER_VERTICAL;
         inputLicense.setLayoutParams(etParams);
 
-        inputLicense.setText(context.getSharedPreferences("ASHUPrefs", Context.MODE_PRIVATE)
+        inputLicense.setText(context.getSharedPreferences("SHREEKANTPrefs", Context.MODE_PRIVATE)
                 .getString("saved_license", ""));
 
         // Paste Button
@@ -258,7 +259,7 @@ public class Login {
                 new Utils(context).FixDP(6)
         );
         GradientDrawable pasteBg = new GradientDrawable();
-        pasteBg.setColor(Color.parseColor("#FFB800")); // Golden Amber
+        pasteBg.setColor(Color.parseColor("#FF1744")); // Red Accent
         pasteBg.setCornerRadius(new Utils(context).FixDP(8));
         pasteButton.setBackground(pasteBg);
 
@@ -307,7 +308,7 @@ public class Login {
                 new Utils(context).FixDP(12)
         );
         GradientDrawable btnBg = new GradientDrawable();
-        btnBg.setColor(Color.parseColor("#F59E0B")); // Golden Amber
+        btnBg.setColor(Color.parseColor("#FF1744")); // Red Accent
         btnBg.setCornerRadius(new Utils(context).FixDP(50));
         loginButton.setBackground(btnBg);
         loginButton.setGravity(Gravity.CENTER);
@@ -319,23 +320,9 @@ public class Login {
         loginButton.setLayoutParams(btnParams);
         card.addView(loginButton);
 
-        // Visit Website Button
+        // Visit Website Button - hidden to keep client branding clean
         Button visitWebsiteBtn = new Button(context);
-        visitWebsiteBtn.setText("🌐 VISIT WEBSITE");
-        visitWebsiteBtn.setTextColor(Color.parseColor("#FFB800"));
-        visitWebsiteBtn.setTextSize(12f);
-        visitWebsiteBtn.setTypeface(Typeface.DEFAULT_BOLD);
-        visitWebsiteBtn.setBackgroundColor(Color.TRANSPARENT);
-        visitWebsiteBtn.setPadding(0, new Utils(context).FixDP(4), 0, new Utils(context).FixDP(4));
-        visitWebsiteBtn.setOnClickListener(v -> {
-            try {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://jackxstore.vercel.app/"));
-                browserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(browserIntent);
-            } catch (Exception e) {
-                showToast("Cannot open browser: " + e.getMessage());
-            }
-        });
+        visitWebsiteBtn.setVisibility(View.GONE);
         card.addView(visitWebsiteBtn);
 
         // Loading indicator
@@ -346,11 +333,11 @@ public class Login {
 
         loadingBar = new ProgressBar(context);
         loadingBar.setVisibility(View.GONE);
-        loadingBar.getIndeterminateDrawable().setColorFilter(Color.parseColor("#FFB800"), PorterDuff.Mode.SRC_IN);
+        loadingBar.getIndeterminateDrawable().setColorFilter(Color.parseColor("#FF1744"), PorterDuff.Mode.SRC_IN);
 
         loadingText = new TextView(context);
         loadingText.setText("Verifying License Key...");
-        loadingText.setTextColor(Color.parseColor("#FFB800"));
+        loadingText.setTextColor(Color.parseColor("#FF1744"));
         loadingText.setTextSize(14);
         loadingText.setPadding(20, 0, 0, 0);
         loadingText.setVisibility(View.GONE);
@@ -391,7 +378,7 @@ public class Login {
         card.setLayoutParams(cardLayoutParam);
 
         scrollContent.addView(card);
-        scrollContent.addView(createDisclaimerCard());
+        // Disclaimer card removed as requested
         scrollView.addView(scrollContent);
 
         // Card entrance animation
@@ -450,7 +437,7 @@ public class Login {
         final GradientDrawable cardBg = new GradientDrawable();
         cardBg.setColor(Color.parseColor("#E6141414")); // Lightweight dark translucent
         cardBg.setCornerRadius(new Utils(context).FixDP(14));
-        cardBg.setStroke(new Utils(context).FixDP(1.2f), Color.parseColor("#FFB800"));
+        cardBg.setStroke(new Utils(context).FixDP(1.2f), Color.parseColor("#FF1744"));
         disclaimerCard.setBackground(cardBg);
 
         LinearLayout.LayoutParams cardParams = new LinearLayout.LayoutParams(
@@ -464,7 +451,7 @@ public class Login {
         // --- 1. Header: 🛡️ DISCLAIMERS ---
         TextView disclaimerTitle = new TextView(context);
         disclaimerTitle.setText("🛡️ DISCLAIMERS :");
-        disclaimerTitle.setTextColor(Color.parseColor("#FFB800"));
+        disclaimerTitle.setTextColor(Color.parseColor("#FF1744"));
         disclaimerTitle.setTextSize(11.5f);
         disclaimerTitle.setTypeface(Typeface.DEFAULT_BOLD);
         disclaimerTitle.setLetterSpacing(0.03f);
@@ -566,7 +553,7 @@ public class Login {
         specRow1.setGravity(Gravity.CENTER_VERTICAL);
         specRow1.setPadding(0, new Utils(context).FixDP(1), 0, new Utils(context).FixDP(1));
 
-        TextView tvApk = createCompactBadge("📱 APK: " + apkVersion, "#FFB800");
+        TextView tvApk = createCompactBadge("📱 APK: " + apkVersion, "#FF1744");
         TextView tvGame = createCompactBadge("🎮 FF MAX 64BIT", "#FFFFFF");
         specRow1.addView(tvApk);
         specRow1.addView(tvGame);
@@ -718,7 +705,7 @@ public class Login {
 
                 if (loginRes.getBoolean("success")) {
                     sendOwnerIDToNative(RemoteConfig.keyauthOwnerId);
-                    context.getSharedPreferences("ASHUPrefs", Context.MODE_PRIVATE)
+                    context.getSharedPreferences("SHREEKANTPrefs", Context.MODE_PRIVATE)
                             .edit().putString("saved_license", licenseKey).apply();
                     Menu.userLicenseKey = licenseKey;
 

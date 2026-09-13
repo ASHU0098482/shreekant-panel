@@ -1,5 +1,5 @@
 
-package com.ashu;
+package com.shreekant;
 
 import android.content.Context;
 import android.provider.Settings;

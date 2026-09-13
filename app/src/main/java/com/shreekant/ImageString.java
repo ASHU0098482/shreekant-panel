@@ -1,4 +1,4 @@
-package com.ashu;
+package com.shreekant;
 
 public class ImageString {
 
