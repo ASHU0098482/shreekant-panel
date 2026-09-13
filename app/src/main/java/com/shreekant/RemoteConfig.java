@@ -11,6 +11,7 @@ public class RemoteConfig {
     // REPLACE THIS URL WITH YOUR JSON FILE URL!
     // ==========================================
     public static final String API_URL = "https://api.github.com/repos/ASHU0098482/shreekant-panel/contents/config.json";
+    public static final String JSDELIVR_URL = "https://cdn.jsdelivr.net/gh/ASHU0098482/shreekant-panel@main/config.json";
     public static final String CONFIG_URL = "https://raw.githubusercontent.com/ASHU0098482/shreekant-panel/main/config.json";
 
     public static boolean isOnline = true;
@@ -43,9 +44,10 @@ public class RemoteConfig {
             BufferedReader reader = null;
             boolean success = false;
             
-            // Prioritize API raw endpoint for instant 0-second updates, then raw github fallback
+            // Ultra-fast multi-source endpoints: Direct API -> jsDelivr CDN -> Raw GitHub fallback
             String[] urlsToTry = new String[] {
                 API_URL,
+                JSDELIVR_URL,
                 CONFIG_URL + "?t=" + System.currentTimeMillis() + "&rnd=" + (int)(Math.random() * 1000000),
                 CONFIG_URL
             };
@@ -57,8 +59,8 @@ public class RemoteConfig {
                     conn.setRequestMethod("GET");
                     conn.setUseCaches(false);
                     conn.setDefaultUseCaches(false);
-                    conn.setConnectTimeout(6000);
-                    conn.setReadTimeout(6000);
+                    conn.setConnectTimeout(2500);
+                    conn.setReadTimeout(2500);
                     conn.setInstanceFollowRedirects(true);
                     conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Linux; Android 10; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36");
                     conn.setRequestProperty("Cache-Control", "no-cache, no-store, must-revalidate");
