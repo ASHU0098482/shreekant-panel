@@ -53,6 +53,14 @@ public class MainActivity extends Activity {
         System.exit(0);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!RemoteConfig.isOnline) {
+            showMaintenanceDialog(RemoteConfig.maintenanceMessage);
+        }
+    }
+
     private void startAppFlow() {
         RemoteConfig.fetchConfig(() -> {
             runOnUiThread(() -> {

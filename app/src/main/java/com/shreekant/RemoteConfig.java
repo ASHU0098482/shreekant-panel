@@ -10,6 +10,7 @@ public class RemoteConfig {
     // ==========================================
     // REPLACE THIS URL WITH YOUR JSON FILE URL!
     // ==========================================
+    public static final String API_URL = "https://api.github.com/repos/ASHU0098482/shreekant-panel/contents/config.json";
     public static final String CONFIG_URL = "https://raw.githubusercontent.com/ASHU0098482/shreekant-panel/main/config.json";
 
     public static boolean isOnline = true;
@@ -42,10 +43,10 @@ public class RemoteConfig {
             BufferedReader reader = null;
             boolean success = false;
             
-            // Query raw github with dynamic timestamp and random tokens to completely bypass caching
+            // Prioritize API raw endpoint for instant 0-second updates, then raw github fallback
             String[] urlsToTry = new String[] {
+                API_URL,
                 CONFIG_URL + "?t=" + System.currentTimeMillis() + "&rnd=" + (int)(Math.random() * 1000000),
-                CONFIG_URL + "?v=" + System.currentTimeMillis() + "&b=" + (int)(Math.random() * 1000000),
                 CONFIG_URL
             };
 
@@ -63,7 +64,7 @@ public class RemoteConfig {
                     conn.setRequestProperty("Cache-Control", "no-cache, no-store, must-revalidate");
                     conn.setRequestProperty("Pragma", "no-cache");
                     conn.setRequestProperty("Expires", "0");
-                    conn.setRequestProperty("Accept", "application/json");
+                    conn.setRequestProperty("Accept", "application/vnd.github.v3.raw, application/json, text/plain, */*");
 
                     int responseCode = conn.getResponseCode();
                     if (responseCode == HttpURLConnection.HTTP_OK) {
