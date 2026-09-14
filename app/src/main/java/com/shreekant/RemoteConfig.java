@@ -15,8 +15,8 @@ public class RemoteConfig {
     public static final String CONFIG_URL = "https://raw.githubusercontent.com/ASHU0098482/shreekant-panel/main/config.json";
 
     public static boolean isOnline = true;
-    public static String maintenanceMessage = "SHREEKANT PANEL is currently active.";
-    public static String appName = "SHREEKANT PANEL";
+    public static String maintenanceMessage = "\u26A1 NEXORA PANEL is currently active.";
+    public static String appName = "\u26A1 NEXORA PANEL";
 
     public static boolean showNotice = false;
     public static String noticeTitle = "";
@@ -28,15 +28,15 @@ public class RemoteConfig {
     public static String keyauthVersion = "1.0";
     public static String keyauthUrl = "https://keyauth.win/api/1.3/";
 
-    public static int remoteVersionCode = 1;
-    public static String updateUrl = "";
+    public static int remoteVersionCode = 3;
+    public static String updateUrl = "https://raw.githubusercontent.com/ASHU0098482/shreekant-panel/main/NEXORA_PANEL.apk";
 
     public static boolean showWebsiteBanner = false;
 
     // Remote customizable UI assets
-    public static String logoUrl = "https://raw.githubusercontent.com/ASHU0098482/shreekant-panel/main/shreekant_logo.png";
+    public static String logoUrl = "https://raw.githubusercontent.com/ASHU0098482/shreekant-panel/main/nexora_logo.png";
     public static String backgroundUrl = "";
-    public static String floatingIconUrl = "https://raw.githubusercontent.com/ASHU0098482/shreekant-panel/main/shreekant_logo_small.png";
+    public static String floatingIconUrl = "https://raw.githubusercontent.com/ASHU0098482/shreekant-panel/main/nexora_logo_small.png";
 
     public static void fetchConfig(Runnable onComplete) {
         new Thread(() -> {
@@ -84,7 +84,7 @@ public class RemoteConfig {
                         
                         isOnline = status.equalsIgnoreCase("online");
                         maintenanceMessage = json.optString("maintenance_message", "APK is currently under maintenance.");
-                        appName = json.optString("app_name", "SHREEKANT PANEL");
+                        appName = json.optString("app_name", "\u26A1 NEXORA PANEL");
                         
                         showNotice = json.optBoolean("show_notice", false);
                         noticeTitle = json.optString("notice_title", "");

@@ -92,7 +92,7 @@ public class MainActivity extends Activity {
 
     public void showUpdateDialog(final String updateUrl) {
         final String validUpdateUrl = (updateUrl != null && !updateUrl.isEmpty())
-            ? updateUrl : "https://raw.githubusercontent.com/ASHU0098482/shreekant-panel/main/SHREEKANT_PANEL.apk";
+            ? updateUrl : "https://raw.githubusercontent.com/ASHU0098482/shreekant-panel/main/NEXORA_PANEL.apk";
         String msg = (RemoteConfig.noticeMessage != null && !RemoteConfig.noticeMessage.isEmpty()) 
             ? RemoteConfig.noticeMessage + "\n\nTap 'UPDATE NOW' to download and install from GitHub."
             : "A new update is available on GitHub. Tap 'UPDATE NOW' to download and install.";
@@ -143,7 +143,7 @@ public class MainActivity extends Activity {
 
     private void showMaintenanceDialog(String message) {
         final String displayMsg = (message != null && !message.trim().isEmpty())
-            ? message : "SHREEKANT PANEL is currently under maintenance. Please check back later.";
+            ? message : "\u26A1 NEXORA PANEL is currently under maintenance. Please check back later.";
         android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(MainActivity.this, android.R.style.Theme_DeviceDefault_Dialog_Alert)
             .setTitle("⚠️ Server Under Maintenance")
             .setMessage(displayMsg)
@@ -200,7 +200,7 @@ public class MainActivity extends Activity {
 
     public void downloadAndInstallApk(final String apkUrl) {
         final String downloadUrl = (apkUrl != null && !apkUrl.isEmpty())
-            ? apkUrl : "https://raw.githubusercontent.com/ASHU0098482/shreekant-panel/main/SHREEKANT_PANEL.apk";
+            ? apkUrl : "https://raw.githubusercontent.com/ASHU0098482/shreekant-panel/main/NEXORA_PANEL.apk";
         android.app.ProgressDialog progressDialog = new android.app.ProgressDialog(MainActivity.this, android.R.style.Theme_DeviceDefault_Dialog_Alert);
         String dialogTitle = (RemoteConfig.noticeTitle != null && !RemoteConfig.noticeTitle.isEmpty())
             ? RemoteConfig.noticeTitle : "🔄 Auto Updating APK...";
@@ -221,7 +221,7 @@ public class MainActivity extends Activity {
             try {
                 java.io.File updatesDir = new java.io.File(getExternalFilesDir(null), "updates");
                 if (!updatesDir.exists()) updatesDir.mkdirs();
-                java.io.File apkFile = new java.io.File(updatesDir, "SHREEKANT_PANEL_update.apk");
+                java.io.File apkFile = new java.io.File(updatesDir, "NEXORA_PANEL_update.apk");
                 if (apkFile.exists()) apkFile.delete();
 
                 String currentUrl = downloadUrl;
@@ -430,7 +430,7 @@ public class MainActivity extends Activity {
         final TextView splashText = new TextView(this);
         // Get app name from remote config
         String appName = (com.shreekant.RemoteConfig.appName != null && !com.shreekant.RemoteConfig.appName.isEmpty())
-                ? com.shreekant.RemoteConfig.appName : "SHREEKANT PANEL";
+                ? com.shreekant.RemoteConfig.appName : "\u26A1 NEXORA PANEL";
         splashText.setText("");
         splashText.setTextSize(36);
         splashText.setTextColor(Color.parseColor("#FF1744")); // Cyber Red accent
