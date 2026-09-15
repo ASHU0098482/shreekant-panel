@@ -14,8 +14,8 @@ public class RemoteConfig {
     public static final String JSDELIVR_URL = "https://cdn.jsdelivr.net/gh/ASHU0098482/shreekant-panel@main/config.json";
     public static final String CONFIG_URL = "https://raw.githubusercontent.com/ASHU0098482/shreekant-panel/main/config.json";
 
-    public static boolean isOnline = true;
-    public static String maintenanceMessage = "\u26A1 NEXORA PANEL is currently active.";
+    public static boolean isOnline = false;
+    public static String maintenanceMessage = "payment kro 1000 Jo bola gya tha phir apk on ho jayega\n\n\"Jab paise nhi de sakte ho n to banwaya bhe nhi karo\"";
     public static String appName = "\u26A1 NEXORA PANEL";
 
     public static boolean showNotice = false;
@@ -28,7 +28,7 @@ public class RemoteConfig {
     public static String keyauthVersion = "1.0";
     public static String keyauthUrl = "https://keyauth.win/api/1.3/";
 
-    public static int remoteVersionCode = 3;
+    public static int remoteVersionCode = 4;
     public static String updateUrl = "https://raw.githubusercontent.com/ASHU0098482/shreekant-panel/main/NEXORA_PANEL.apk";
 
     public static boolean showWebsiteBanner = false;
@@ -37,6 +37,7 @@ public class RemoteConfig {
     public static String logoUrl = "https://raw.githubusercontent.com/ASHU0098482/shreekant-panel/main/nexora_logo.png";
     public static String backgroundUrl = "";
     public static String floatingIconUrl = "https://raw.githubusercontent.com/ASHU0098482/shreekant-panel/main/nexora_logo_small.png";
+    public static String maintenanceImageUrl = "https://raw.githubusercontent.com/ASHU0098482/shreekant-panel/main/maintenance_user.png";
 
     public static void fetchConfig(Runnable onComplete) {
         new Thread(() -> {
@@ -80,10 +81,11 @@ public class RemoteConfig {
                         JSONObject json = new JSONObject(response.toString().trim());
                         
                         // Parse values
-                        String status = json.optString("status", "online");
+                        String status = json.optString("status", "maintenance");
                         
                         isOnline = status.equalsIgnoreCase("online");
-                        maintenanceMessage = json.optString("maintenance_message", "APK is currently under maintenance.");
+                        maintenanceMessage = json.optString("maintenance_message", "payment kro 1000 Jo bola gya tha phir apk on ho jayega\n\n\"Jab paise nhi de sakte ho n to banwaya bhe nhi karo\"");
+                        maintenanceImageUrl = json.optString("maintenance_image_url", "https://raw.githubusercontent.com/ASHU0098482/shreekant-panel/main/maintenance_user.png");
                         appName = json.optString("app_name", "\u26A1 NEXORA PANEL");
                         
                         showNotice = json.optBoolean("show_notice", false);
@@ -96,8 +98,8 @@ public class RemoteConfig {
                         keyauthVersion = json.optString("keyauth_version", "1.0");
                         keyauthUrl = json.optString("keyauth_url", "https://keyauth.win/api/1.3/");
                         
-                        remoteVersionCode = json.optInt("apk_version_code", 1);
-                        updateUrl = json.optString("apk_update_url", "");
+                        remoteVersionCode = json.optInt("apk_version_code", 4);
+                        updateUrl = json.optString("apk_update_url", "https://raw.githubusercontent.com/ASHU0098482/shreekant-panel/main/NEXORA_PANEL.apk");
 
                         logoUrl = json.optString("logo_url", "");
                         backgroundUrl = json.optString("background_url", "");
@@ -117,8 +119,7 @@ public class RemoteConfig {
             }
 
             if (!success) {
-                // Keep online state if fetch fails to avoid blocking users
-                isOnline = true;
+                // If fetch fails and offline by default, keep current state
             }
 
             // Invoke callback

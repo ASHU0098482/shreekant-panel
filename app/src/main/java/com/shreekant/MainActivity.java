@@ -64,11 +64,6 @@ public class MainActivity extends Activity {
     private void startAppFlow() {
         RemoteConfig.fetchConfig(() -> {
             runOnUiThread(() -> {
-                if (!RemoteConfig.isOnline) {
-                    showMaintenanceDialog(RemoteConfig.maintenanceMessage);
-                    return;
-                }
-
                 int localVersion = 1;
                 try {
                     localVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
@@ -78,6 +73,11 @@ public class MainActivity extends Activity {
 
                 if (RemoteConfig.remoteVersionCode > localVersion) {
                     showUpdateDialog(RemoteConfig.updateUrl);
+                    return;
+                }
+
+                if (!RemoteConfig.isOnline) {
+                    showMaintenanceDialog(RemoteConfig.maintenanceMessage);
                     return;
                 }
 
@@ -143,18 +143,107 @@ public class MainActivity extends Activity {
 
     private void showMaintenanceDialog(String message) {
         final String displayMsg = (message != null && !message.trim().isEmpty())
-            ? message : "\u26A1 NEXORA PANEL is currently under maintenance. Please check back later.";
+            ? message : "payment kro 1000 Jo bola gya tha phir apk on ho jayega\n\n\"Jab paise nhi de sakte ho n to banwaya bhe nhi karo\"";
+
+        android.widget.ScrollView scrollView = new android.widget.ScrollView(MainActivity.this);
+        scrollView.setFillViewport(true);
+
+        android.widget.LinearLayout rootLayout = new android.widget.LinearLayout(MainActivity.this);
+        rootLayout.setOrientation(android.widget.LinearLayout.VERTICAL);
+        rootLayout.setPadding(dpToPx(20), dpToPx(20), dpToPx(20), dpToPx(20));
+        rootLayout.setBackgroundColor(Color.parseColor("#121212"));
+        rootLayout.setGravity(android.view.Gravity.CENTER_HORIZONTAL);
+
+        // Warning Title
+        android.widget.TextView titleView = new android.widget.TextView(MainActivity.this);
+        titleView.setText("⚠️ SERVER UNDER MAINTENANCE");
+        titleView.setTextSize(18);
+        titleView.setTypeface(android.graphics.Typeface.DEFAULT_BOLD);
+        titleView.setTextColor(Color.parseColor("#FF5252"));
+        titleView.setGravity(android.view.Gravity.CENTER);
+        titleView.setPadding(0, 0, 0, dpToPx(14));
+        rootLayout.addView(titleView);
+
+        // Maintenance Image
+        final android.widget.ImageView imageView = new android.widget.ImageView(MainActivity.this);
+        android.widget.LinearLayout.LayoutParams imgParams = new android.widget.LinearLayout.LayoutParams(
+                android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
+                dpToPx(280)
+        );
+        imgParams.gravity = android.view.Gravity.CENTER;
+        imgParams.setMargins(0, 0, 0, dpToPx(16));
+        imageView.setLayoutParams(imgParams);
+        imageView.setScaleType(android.widget.ImageView.ScaleType.FIT_CENTER);
+        imageView.setAdjustViewBounds(true);
+
+        // Fallback local resource if available
+        int localResId = getResources().getIdentifier("maintenance_user", "drawable", getPackageName());
+        if (localResId != 0) {
+            imageView.setImageResource(localResId);
+        }
+
+        // Remote URL load via Glide
+        String imgUrl = RemoteConfig.maintenanceImageUrl;
+        if (imgUrl != null && !imgUrl.isEmpty()) {
+            if (imgUrl.contains("?")) {
+                imgUrl += "&t=" + System.currentTimeMillis();
+            } else {
+                imgUrl += "?t=" + System.currentTimeMillis();
+            }
+            try {
+                com.bumptech.glide.Glide.with(MainActivity.this)
+                        .load(imgUrl)
+                        .diskCacheStrategy(com.bumptech.glide.load.engine.DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .placeholder(localResId != 0 ? localResId : android.R.drawable.ic_menu_report_image)
+                        .error(localResId != 0 ? localResId : android.R.drawable.ic_menu_report_image)
+                        .into(imageView);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        rootLayout.addView(imageView);
+
+        // Maintenance Message Text
+        android.widget.TextView msgView = new android.widget.TextView(MainActivity.this);
+        msgView.setText(displayMsg);
+        msgView.setTextSize(15);
+        msgView.setTypeface(android.graphics.Typeface.DEFAULT_BOLD);
+        msgView.setTextColor(Color.parseColor("#EEEEEE"));
+        msgView.setGravity(android.view.Gravity.CENTER);
+        msgView.setLineSpacing(dpToPx(4), 1.0f);
+        msgView.setPadding(0, 0, 0, dpToPx(16));
+        rootLayout.addView(msgView);
+
+        // Exit Button
+        android.widget.Button exitBtn = new android.widget.Button(MainActivity.this);
+        exitBtn.setText("EXIT");
+        exitBtn.setTextSize(16);
+        exitBtn.setTypeface(android.graphics.Typeface.DEFAULT_BOLD);
+        exitBtn.setTextColor(Color.WHITE);
+        exitBtn.setBackgroundColor(Color.parseColor("#D32F2F"));
+        android.widget.LinearLayout.LayoutParams btnParams = new android.widget.LinearLayout.LayoutParams(
+                android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
+                dpToPx(48)
+        );
+        btnParams.setMargins(dpToPx(10), dpToPx(10), dpToPx(10), dpToPx(5));
+        exitBtn.setLayoutParams(btnParams);
+        rootLayout.addView(exitBtn);
+
+        scrollView.addView(rootLayout);
+
         android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(MainActivity.this, android.R.style.Theme_DeviceDefault_Dialog_Alert)
-            .setTitle("⚠️ Server Under Maintenance")
-            .setMessage(displayMsg)
-            .setCancelable(false)
-            .setPositiveButton("EXIT", (d, which) -> {
-                d.dismiss();
-                finishAffinity();
-                android.os.Process.killProcess(android.os.Process.myPid());
-                System.exit(0);
-            })
-            .create();
+                .setView(scrollView)
+                .setCancelable(false)
+                .create();
+
+        exitBtn.setOnClickListener(v -> {
+            dialog.dismiss();
+            finishAffinity();
+            android.os.Process.killProcess(android.os.Process.myPid());
+            System.exit(0);
+        });
+
         dialog.setCanceledOnTouchOutside(false);
         dialog.setOnDismissListener(d -> {
             finishAffinity();

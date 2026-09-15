@@ -6,8 +6,8 @@ android {
         applicationId "com.shreekant"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 3
-        versionName "3.0"
+        versionCode 4
+        versionName "4.0"
         ndk {
             abiFilters 'armeabi-v7a', 'arm64-v8a'
         }
@@ -38,12 +38,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    externalNativeBuild {
-        ndkBuild {
-            path file('src/main/jni/Android.mk')
-        }
-    }
-    ndkVersion '21.4.7075529'
+    // Native libs are packaged from src/main/jniLibs directly
+    // externalNativeBuild {
+    //     ndkBuild {
+    //         path file('src/main/jni/Android.mk')
+    //     }
+    // }
+    // ndkVersion '21.4.7075529'
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
